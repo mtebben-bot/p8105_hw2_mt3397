@@ -3,7 +3,7 @@ title: "HW 2"
 output: github_document
 ---
 
-```{r_libraries}
+```{r libraries}
 library(tidyverse)
 library(readxl)
 ```
@@ -12,7 +12,7 @@ library(readxl)
 
 Read in the Mr. Trash Wheel dataset.
 
-```{r_trashwheel_read}
+```{r trashwheel_read}
 trashwheel_df = 
   read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
              range = cell_cols("A:N")) %>% 
@@ -26,7 +26,7 @@ trashwheel_df =
 
 Read in precipitation data.
 
-```{r_precipitation2018_read}
+```{r precipitation2018_read}
 precip2018 = 
   read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
              sheet = "2018 Precipitation",
@@ -38,7 +38,7 @@ precip2018 =
   relocate(year) 
 ```
 
-```{r_precipitation2017_read}
+```{r precipitation2017_read}
 precip2017 = 
   read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
              sheet = "2017 Precipitation",
@@ -52,15 +52,16 @@ precip2017 =
 
 Combine 2017 and 2018 precipitation data frames.
 
-```{r_bind_20172018_precip}
+```{r bind_20172018_precip}
 precip_df = 
   bind_rows(precip2017, precip2018) %>% 
   mutate(month = month.name[month])
 ```
 
-This dataset contains information from a Mr. Trash Wheel trash collector from Baltimore, Maryland. As trash enters the harbor, the trash wheel collects trash and stores it in a dumpster. The dataset contains information on year, month, and trash collected, including some specific kinds of trash. There are a total of `nrow(trashwheel_df)` rows in our final dataset. Additional data sheets include precipitation data by month and year.
+This data set contains information from a Mr. Trash Wheel trash collector from Baltimore, Maryland. As trash enters the harbor, the trash wheel collects trash and stores it in a dumpster. The data set contains information on year, month, and trash collected, including some specific kinds of trash. Additional data sheets include precipitation data by month and year. There are a total of `r nrow(trashwheel_df)` rows in our cleaned Mr. Trash Wheel data set.
+The precipitation data frame we created contains monthly precipitation totals for the years 2017 and 2018.
 
-```{r_2018_precip_total}
+```{r 2018_precip_total}
 precip_2018_total = 
   read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
              sheet = "2018 Precipitation",
@@ -69,15 +70,17 @@ precip_2018_total =
   janitor::clean_names() %>% 
   drop_na(month) %>% 
   mutate(year = 2018) %>% 
+  mutate(month = month.name[month]) %>% 
   relocate(year) %>% 
   summarise_if(is.numeric, sum)
 ```
 
 The total precipitation in 2018 is 70.3 inches.
 
-```{r_2017_median_sports_balls}
+```{r 2017_median_sports_balls}
 balls2017_df = 
-  read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx") %>% 
+  read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
+             range = cell_cols("A:N")) %>% 
   janitor::clean_names() %>% 
   select(year, sports_balls, dumpster) %>% 
   drop_na(dumpster) %>% 
@@ -86,5 +89,9 @@ balls2017_df =
 ```
 
 The median number of sports balls in a dumpster in 2017 is 8.
+
+
+
+
 
 
