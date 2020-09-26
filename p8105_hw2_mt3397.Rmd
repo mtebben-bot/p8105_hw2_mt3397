@@ -90,8 +90,15 @@ balls2017_df =
 
 The median number of sports balls in a dumpster in 2017 is 8.
 
+## Problem 2
 
-
+```{r read_and_clean_subway}
+subway = 
+  read_csv("./data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
+  janitor::clean_names() %>% 
+  select(line, station_name, station_longitude, station_latitude, entrance_type, entry, vending, ada,
+         starts_with("route"))
+```
 
 
 
