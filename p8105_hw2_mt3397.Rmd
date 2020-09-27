@@ -156,3 +156,38 @@ ADA_A =
 ```
 
 There are `r nrow(distinct_A)` distinct stations that serve the A train. There are `r nrow(ADA_A)` ADA compliant stations that serve the A train.
+
+## Problem 3
+
+First, we need to clean the pols_month.csv data.
+
+```{r pols_month}
+pols_df = 
+  read_csv("./data/pols-month_hw2.csv") %>% 
+  separate(mon, into = c("year", "month", "day"), convert = TRUE) %>% 
+  mutate(
+    month = month.name[month],
+    president = if_else(prez_gop == 1, "gop", "dem")) %>% 
+  select(-day, -prez_dem, -prez_gop)
+```
+
+Then, we need to clean snp.csv data.
+
+```{r snp}
+snp_df = 
+  read_csv("./data/snp_hw2.csv") %>% 
+  separate(date, into = c("month", "day", "year"), convert = TRUE) %>% 
+  mutate(month = month.name[month]) %>% 
+  select(-day) %>% 
+  relocate(year)
+```
+
+Finally, we need to clean unemployment.csv data.
+
+```{r unemployment}
+
+```
+
+
+
+
