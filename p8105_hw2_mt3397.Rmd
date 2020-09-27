@@ -100,6 +100,34 @@ subway =
   janitor::clean_names() %>% 
   select(line, station_name, station_longitude, station_latitude, entrance_type, entry, vending, ada,
          starts_with("route")) %>% 
+  mutate(entry = recode(entry, YES = TRUE, NO = FALSE))
+```
+
+This dataset contains information about the NYC subway, including the line, station name and location (longitude and latitude), entrance type and whether or not entry is allowed, as well as ADA compliance, routes at each station, and whether or not vending is present. I cleaned the names and selected the variables of interest. Additionally, I recoded entry as a logical variable. There are 19 variables and 1858 rows in this data frame. This is not tidy data.
+
+```{r answering_questions}
+distinct_nyc = 
+  subway %>% 
+  distinct(line, station_name)
+
+ada_nyc = 
+  subway %>% 
+  filter(ada == TRUE)
+
+entry_nyc = 
+  subway %>% 
+  select(entry, vending) %>% 
+  filter(vending == "NO") %>% 
+  summary()
+```
+
+There are `r nrow(distinct_nyc)` distinct stations. `r nrow(ada_nyc)` stations are ADA compliant. 
+
+#### Next, we need to make route name and route number distinct variables.
+
+```{r route_name_number}
+tidysubway =
+  subway %>% 
   mutate_at(vars(route1:route11), as.character) %>% 
   pivot_longer(
     route1:route11,
@@ -107,8 +135,24 @@ subway =
     names_prefix = "route",
     values_to = "route_name"
   ) %>% 
-  drop_na(c("route_name","route_number"))
+  drop_na(c("route_name","route_number")) 
 ```
 
+Then, we can answer the questions about distinct A stations and ADA compliant A stations.
 
+```{r A_distinct_ADA}
+distinct_A = 
+tidysubway %>% 
+  filter(route_name == "A") %>% 
+  distinct(station_name, line)
 
+ADA_A = 
+  tidysubway %>% 
+  filter(
+    route_name == "A",
+    ada == TRUE
+    ) %>% 
+  distinct(station_name, line)
+```
+
+There are `r nrow(distinct_A)` distinct stations that serve the A train. There are `r nrow(ADA_A)` ADA compliant stations that serve the A train.
