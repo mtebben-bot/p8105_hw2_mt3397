@@ -121,7 +121,7 @@ entry_nyc =
   summary()
 ```
 
-There are `r nrow(distinct_nyc)` distinct stations. `r nrow(ada_nyc)` stations are ADA compliant. 
+There are `r nrow(distinct_nyc)` distinct stations. `r nrow(ada_nyc)` stations are ADA compliant. There are 183 stations without vending, and 69 of them allow entry, so 37.7% of stations without vending have entry.
 
 #### Next, we need to make route name and route number distinct variables.
 
