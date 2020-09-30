@@ -166,7 +166,7 @@ pols_df =
   read_csv("./data/pols-month_hw2.csv") %>% 
   separate(mon, into = c("year", "month", "day"), convert = TRUE) %>% 
   mutate(
-    month = month.name[month],
+    month = recode(month, "1" = "January", "2" = "February", "3" = "March", "4" = "April", "5" = "May", "6" = "June", "7" = "July", "8" = "August", "9" = "September", "10" = "October", "11" = "November", "12" = "December"),
     president = if_else(prez_gop == 1, "gop", "dem")) %>% 
   arrange(year) %>% 
   select(-day, -prez_dem, -prez_gop)
@@ -178,7 +178,9 @@ Then, we need to clean snp.csv data.
 snp_df = 
   read_csv("./data/snp_hw2.csv") %>% 
   separate(date, into = c("month", "day", "year"), convert = TRUE) %>% 
-  mutate(month = month.name[month]) %>% 
+  mutate(
+    month = recode(month, "1" = "January", "2" = "February", "3" = "March", "4" = "April", "5" = "May", "6" = "June", "7" = "July", "8" = "August", "9" = "September", "10" = "October", "11" = "November", "12" = "December")
+  ) %>% 
   select(-day) %>% 
   relocate(year) %>% 
   arrange(year, match(month, month.name))
